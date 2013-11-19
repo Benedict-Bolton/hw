@@ -3,23 +3,35 @@
 // PD08
 // 2013-11-18
 
+/*I would never forget the picture but tonight it shall be embedded in the code it seems (along with an email).
+Perhaps I shall include it in the repository in the future, but i suppose email and code shall suffice 
+for tonight.
+
+Hmm one might say that few things can top the Scottish Highlands in fall, but that if for one to
+determine from this picture, for the moment:
+http://cdn.theatlantic.com/static/infocus/ngpc111513/n21_12229731.jpg
+
+Makes one wonder why Bond ever left, I suppose there aren't many martini's or Commies to kill up there....*/
+
+
 public class Rational {
     
     private int numer; //numerator
     private int denom; //denominater (sometimes are switched around for gcd)
     
+    //default Rational constructor
     public Rational () {
 	numer = 0;
 	denom = 1;
     }
     
-
+    //Overloaded Constructor for Rational
     //Pre: bot != 0
     //post: Rational object
     public Rational ( int top, int bot ) {
 	this();
 	if (bot == 0) {
-	    System.out.println( "One cannot have a denominator equal to zero. The Rational has been reset to 0");
+	    System.out.println( "One cannot have a denominator equal to zero. The Rational has been reset to 0/1");
 	}
 	else {
 	    numer = top;
@@ -49,29 +61,35 @@ public class Rational {
 	numer = inp;
 	return oldNumer;
     }
-
+    //end mutators
+	
+    // double floatValue	
     //Post: returns the rational number in double form 
     public double floatValue () {
 	return (numer *1.0)/(denom); //multiple by 1.0 to prevent int div
     }
     
+    //overwriting of default toString method to display float and fraction value
     public String toString() {
 	return (numer + "/" + denom + " -- which equals: " + this.floatValue());
     }
 
     //multiplies the calling object by the input
+    //input != null
     public void multiply ( Rational multiplier) {
 	denom *=  multiplier.getDenom();
 	numer *=  multiplier.getNumer();
     }
 
     //divides the calling object by the input
+    //input != null
     public void divide ( Rational divisor) {
 	denom *=  divisor.getNumer();
 	numer *=  divisor.getDenom();
     }
 
     //adds the input to the calling object
+    //pre: input != null
     public void add ( Rational adder ) {
 	numer =  ( (numer * adder.getDenom()) + (adder.getNumer() * denom) );
 	denom *= adder.getDenom();
@@ -79,6 +97,7 @@ public class Rational {
 
 
     //subtracts the input from the calling object
+    //pre: input != null
     public void subtract ( Rational reducter ) {
 	numer = ( (numer * reducter.getDenom()) - (reducter.getNumer() * denom) );
 	denom *= reducter.getDenom();
@@ -117,6 +136,7 @@ public class Rational {
 	numer /= gCD;
     }
 
+   //can be applied universally w/o an object
    public static int gcdUni ( int num, int den) { //GCD with recursion vie Euclid's method
 	if (den == 0) {
 	    return num;
@@ -150,7 +170,7 @@ public class Rational {
     }
 
 
-
+	//the alrightly mighty main method
     public static void main (String[] args) {
 	Rational r = new Rational(2,3); //Stores the rational number 2/3
 	System.out.println(r);
@@ -172,11 +192,11 @@ public class Rational {
 	System.out.println(s);
 	t.reduce(); //Changes t to 2/9
 	System.out.println(t);
-	System.out.println( w.compareTo(t) ); //should return 42
-	System.out.println( t.compareTo(s) ); //should return -42
+	System.out.println( w.compareTo(t) ); //should return 42, compares w to t
+	System.out.println( t.compareTo(s) ); //should return -42, compares t to s
 	Rational k = new Rational (4, 8);
-	System.out.println( s.compareTo(k) ); //should return 0;
-	System.out.println( gcdUni( 28, 32) ); //should return 4
+	System.out.println( s.compareTo(k) ); //should return 0, compares 2
+	System.out.println( gcdUni( 28, 32) ); //should return 4, returns gcd of fraction with num of 28 and den of 32
     }//end main
 
 }//end class
