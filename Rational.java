@@ -1,7 +1,7 @@
 // BENEDICT BOLTON
-// HW#27
+// HW#28
 // PD08
-// 2013-11-18
+// 2013-11-19
 
 /*I would never forget the picture but tonight it shall be embedded in the code it seems (along with an email).
 Perhaps I shall include it in the repository in the future, but i suppose email and code shall suffice 
@@ -84,8 +84,13 @@ public class Rational {
     //divides the calling object by the input
     //input != null
     public void divide ( Rational divisor) {
-	denom *=  divisor.getNumer();
-	numer *=  divisor.getDenom();
+	if (divisor.getNumer() != 0) {
+	    denom *=  divisor.getNumer();
+	    numer *=  divisor.getDenom();
+	}
+	else {
+	    System.out.println("One cannor divide by 0, tsk tsk");
+	}
     }
 
     //adds the input to the calling object
@@ -103,7 +108,7 @@ public class Rational {
 	denom *= reducter.getDenom();
     }
 	
-    //private version meant for reduce function
+    /*private version meant for reduce function
    private int gcd ( int a, int b) { //GCD with recursion vie Euclid's method
 	if (b == 0) {
 	    return a;
@@ -112,42 +117,44 @@ public class Rational {
 	    return gcd ( b, a%b );
 	}
 
-    }
+	}*/
 
     //public version (didnt know which version wanted so made both)
     //for use by individual objects
     public int gcd () {
-
+	int  a, b;
+	b = denom;
+	a = numer;
  //GCD with while loop, both done via euclids method
-	while (denom != 0) {
-	    int k = denom;
-	    denom = numer%k;
-	    numer = k;
+	while (b != 0) {
+	    int k = b;
+	    b = a%k;
+	    a = k;
 	}
-	return numer;
+	return a;
     }
 
   
 
     //reduces rational number to simplest form via GCD
     public void reduce() {
-	int gCD = gcd ( numer, denom );
+	int gCD = gcd();
 	denom /= gCD;
 	numer /= gCD;
     }
 
    //can be applied universally w/o an object
-   public static int gcdUni ( int num, int den) { //GCD with recursion vie Euclid's method
+   public static int gcd ( int num, int den) { //GCD with recursion vie Euclid's method
 	if (den == 0) {
 	    return num;
 	}
 	else {
-	    return gcdUni ( den, num%den );
+	    return gcd ( den, num%den );
 	}
 
-    }
+   }
 
-    //Rational compareTo()
+    //int compareTo(Rational)
     //Pre: input = Rational object
     //post: return positive int (42) if caller > input
     //      return negative int (-42) if caller < input
@@ -168,6 +175,38 @@ public class Rational {
 	    return -42;
 	}
     }
+
+    //boolean equals( Rational)
+    //pre: no nulls for input
+    //post: output true if they are equal, false if not
+    public boolean equals (Object subject) {
+	reduce();
+	if (this == subject) {
+	    return true;
+	}
+	if ( !(subject instanceof Rational) ) {
+	    return false; 
+	}
+	else {
+	    ((Rational) subject).reduce();
+	}
+	return ( (numer == ((Rational) subject).getNumer() ) 
+		 && ( denom == ((Rational) subject).getDenom()) );
+    }
+
+    public int compareTo ( Object inputOb ) {
+	if ( !(inputOb instanceof Rational) ) {
+	    return 777;
+	}
+	int inpDen = ((Rational) inputOb).getDenom();
+	int num2 = denom * ((Rational) inputOb).getNumer();
+	int num1 = numer * inpDen;
+	int den1 = denom * inpDen;
+	int den2 = denom * inpDen;
+
+        return (num1 - num2);
+    }
+	
 
 
 	//the alrightly mighty main method
@@ -192,11 +231,11 @@ public class Rational {
 	System.out.println(s);
 	t.reduce(); //Changes t to 2/9
 	System.out.println(t);
-	System.out.println( w.compareTo(t) ); //should return 42, compares w to t
-	System.out.println( t.compareTo(s) ); //should return -42, compares t to s
+	System.out.println( w.compareTo(t) ); //should return positive integer, compares w to t
+	System.out.println( t.compareTo(s) ); //should return negative integer, compares t to s
 	Rational k = new Rational (4, 8);
 	System.out.println( s.compareTo(k) ); //should return 0, compares 2
-	System.out.println( gcdUni( 28, 32) ); //should return 4, returns gcd of fraction with num of 28 and den of 32
+	System.out.println( gcd( 28, 32) ); //should return 4, returns gcd of fraction with num of 28 and den of 32
     }//end main
 
 }//end class
